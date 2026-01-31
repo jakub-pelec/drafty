@@ -1,0 +1,82 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can only read and write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // MMR - Users can read any MMR (for leaderboard), but only Cloud Functions can write
+    // This prevents cheating by manually modifying MMR
+    match /mmr/{userId} {
+      // Anyone authenticated can read MMR data (needed for leaderboard)
+      allow read: if request.auth != null;
+      
+      // Only allow writes from Cloud Functions (admin SDK bypasses rules)
+      // Users cannot directly modify MMR
+      allow write: if false;
+    }
+
+    // Matches - Authenticated users can read, Cloud Functions handle writes
+    match /matches/{matchId} {
+      // Anyone authenticated can read match data
+      allow read: if request.auth != null;
+      
+      // Only Cloud Functions can create/modify matches
+      // This ensures MMR calculations are always done server-side
+      allow write: if false;
+    }
+
+    // Pending verifications - only the owner and cloud functions
+    match /pendingVerifications/{verificationId} {
+      allow read: if request.auth != null && 
+        resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Scrims - authenticated users can read, creators can modify
+    match /scrims/{scrimId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && 
+        resource.data.createdBy == request.auth.uid;
+    }
+
+    // Games within scrims
+    match /scrims/{scrimId}/games/{gameId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // Queue - Users can read all queue entries (for status display)
+    // Users can only create/delete their own queue entry
+    // Cloud Functions handle matchmaking
+    match /queue/{odId} {
+      // Anyone authenticated can read queue data (for role counts, etc.)
+      allow read: if request.auth != null;
+      
+      // Users can only modify their own queue entry
+      allow create, update, delete: if request.auth != null && 
+        request.auth.uid == odId;
+    }
+
+    // Drafts - Participants can read, only Cloud Functions can write
+    match /drafts/{draftId} {
+      // Anyone authenticated can read drafts (for spectating, etc.)
+      allow read: if request.auth != null;
+      
+      // Only Cloud Functions can create/modify drafts
+      // This ensures draft integrity and prevents cheating
+      allow write: if false;
+    }
+
+    // Champion cache - Anyone authenticated can read
+    match /cache/{cacheId} {
+      allow read: if request.auth != null;
+      
+      // Only Cloud Functions can update cache
+      allow write: if false;
+    }
+  }
+}
