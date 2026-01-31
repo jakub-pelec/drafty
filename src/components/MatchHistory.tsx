@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useMatchHistory } from '@/hooks/useMatchHistory'
 import { Button } from '@/components/ui/button'
 import { Loader2, ChevronDown, ChevronUp } from 'lucide-react'

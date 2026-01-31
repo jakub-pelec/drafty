@@ -1,10 +1,7 @@
 import Layout from '@/components/Layout'
 import { MatchEntryForm } from '@/components/MatchEntryForm'
-import { useNavigate } from 'react-router-dom'
 
 export default function SubmitMatch() {
-  const navigate = useNavigate()
-
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8 max-w-6xl">

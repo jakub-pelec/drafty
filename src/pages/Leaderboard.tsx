@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { MMRBadge, MMRStats } from '@/components/MMRBadge'
-import { getRankColor, getRankBgColor } from '@/lib/mmr'
+import { getRankColor } from '@/lib/mmr'
 import { Loader2, RefreshCw, Trophy, Medal, Award } from 'lucide-react'
 import type { MMRRank } from '@/lib/mmr'
 

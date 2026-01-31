@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Users, Clock, Shield, Swords, Crosshair, Heart, Target } from 'lucide-react'
+import { Loader2, Users, Shield, Swords, Crosshair, Heart, Target } from 'lucide-react'
 import type { PlayerRole, RiotRegion } from '@/types'
 
 const ROLES: { value: PlayerRole; label: string; icon: React.ReactNode }[] = [

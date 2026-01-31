@@ -9,7 +9,7 @@ export function useDraft(draftId: string | null, userId: string | undefined) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [timeRemaining, setTimeRemaining] = useState(30)
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Listen to draft updates in real-time
   useEffect(() => {

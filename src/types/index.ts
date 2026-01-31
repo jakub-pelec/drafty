@@ -233,6 +233,7 @@ export interface PerformanceBreakdown {
 
 // Leaderboard entry
 export interface LeaderboardEntry {
+  position: number
   odId: string
   oduid: string
   displayName: string

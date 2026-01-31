@@ -16,7 +16,7 @@ export default function Draft() {
   const { draftId } = useParams<{ draftId: string }>()
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { draft, loading, error, timeRemaining, setReady, makeAction, timeoutDraft, isMyTurn, getMyTeam } = useDraft(
+  const { draft, loading, error, timeRemaining, setReady, makeAction, timeoutDraft, isMyTurn } = useDraft(
     draftId || null,
     user?.uid
   )
@@ -180,7 +180,6 @@ export default function Draft() {
 
   // Active draft (banning or picking)
   const currentAction = draft.actions[draft.currentPhase]
-  const myTeam = getMyTeam()
   const isBanPhase = draft.status === 'banning'
 
   return (
@@ -228,7 +227,6 @@ export default function Draft() {
                   player={player}
                   isCurrentUser={player.odId === user?.uid}
                   champions={champions}
-                  isBanning={isBanPhase}
                 />
               )
             })}
@@ -336,7 +334,6 @@ export default function Draft() {
                   player={player}
                   isCurrentUser={player.odId === user?.uid}
                   champions={champions}
-                  isBanning={isBanPhase}
                 />
               )
             })}
@@ -389,12 +386,10 @@ function DraftPlayerCard({
   player,
   isCurrentUser,
   champions,
-  isBanning,
 }: {
   player: DraftPlayer
   isCurrentUser: boolean
   champions: Champion[]
-  isBanning: boolean
 }) {
   const champion = champions.find(c => c.id === player.championId)
 
